@@ -1,0 +1,15 @@
+SEQUENTIAL
+# Username: 1000-1009
+# Password: 1234
+# SIP Proxy: 10.0.0.10
+1000;10.0.0.10;[authentication username=1000 password=1234]
+1001;10.0.0.10;[authentication username=1001 password=1234]
+1002;10.0.0.10;[authentication username=1002 password=1234]
+1003;10.0.0.10;[authentication username=1003 password=1234]
+1004;10.0.0.10;[authentication username=1004 password=1234]
+1005;10.0.0.10;[authentication username=1005 password=1234]
+1006;10.0.0.10;[authentication username=1006 password=1234]
+1007;10.0.0.10;[authentication username=1007 password=1234]
+1008;10.0.0.10;[authentication username=1008 password=1234]
+1009;10.0.0.10;[authentication username=1009 password=1234]
+
