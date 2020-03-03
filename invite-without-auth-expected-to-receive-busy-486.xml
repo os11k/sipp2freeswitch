@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE scenario SYSTEM "sipp.dtd">
+
+<!-- You will need to compile SIPp with OpenSSL support 'make ossl' to use this call scenario -->
+
+<!-- Execute this script with SIPp using the following command assuming your UAS is 10.0.0.10 -->
+<!-- Replace 10.0.0.10 with your SIP proxy’s address. The command will generate 10 calls (-r) per 10000 -->
+<!-- milliseconds (-rp), max 100 concurrent calls (-l) and make a max of 100000 calls (-m) -->
+
+<!-- ./sipp 10.0.0.10 -sf invite-auth-sdp-nomedia.xml -inf user-accounts.csv -m 100000 -l 100 -r 10 -rp 10000 -->
+
+<scenario name="UAC INVITE with Auth and SDP">
+  <send retrans="500" start_txn="invite">
+    <![CDATA[
+
+      INVITE sip:[field3]@[field1]:[remote_port] SIP/2.0
+      Via: SIP/2.0/[transport] [local_ip]:[local_port];branch=[branch]
+      From: sipp <sip:[field0]@[field1]:[local_port]>;tag=[pid]SIPpTag00[call_number]
+      To: sut <sip:[field3]@[field1]:[remote_port]>
+      Call-ID: [call_id]
+      CSeq: [cseq] INVITE
+      Contact: <sip:sipp@[local_ip]:[local_port]>
+      Max-Forwards: 70
+      Subject: Performance Test
+      User-Agent: SIPp Tester UAC
+      Allow: INVITE, ACK, CANCEL, OPTIONS, BYE, REFER, SUBSCRIBE, NOTIFY, INFO, PUBLISH
+      Content-Type: application/sdp
+      Content-Length: [len]
+
+      v=0
+      o=user1 53655765 2353687637 IN IP[local_ip_type] [local_ip]
+      s=-
+      c=IN IP[media_ip_type] [media_ip]
+      t=0 0
+      m=audio [auto_media_port] RTP/AVP 8
+      a=rtpmap:8 PCMA/8000
+      a=rtpmap:101 telephone-event/8000
+      a=fmtp:101 0-11,16
+
+
+    ]]>
+  </send>
+
+  <recv response="100" optional="true" rrs="true" response_txn="invite">
+  </recv>
+
+  <recv response="486" rrs="true" response_txn="invite">
+  </recv>
+
+  <send ack_txn="invite">
+    <![CDATA[
+
+      ACK sip:[field3]@[field1] SIP/2.0
+      Via: SIP/2.0/[transport] [local_ip]:[local_port];branch=[branch-3]
+      From: sipp <sip:[field0]@[field1]:[local_port]>;tag=[pid]SIPpTag00[call_number]
+      [last_To]
+      [routes]
+      Call-ID: [call_id]
+      CSeq: [cseq] ACK
+      Contact: <sip:sipp@[local_ip]:[local_port]>
+      Max-Forwards: 70
+      Subject: Performance Test
+      User-Agent: SIPp Tester UAC
+      Content-Length: 0
+
+    ]]>
+  </send>
+
+  <!-- definition of the response time repartition table (unit is ms)   -->
+  <ResponseTimeRepartition value="10, 20, 30, 40, 50, 100, 150, 200"/>
+
+  <!-- definition of the call length repartition table (unit is ms)     -->
+  <CallLengthRepartition value="10, 50, 100, 500, 1000, 5000, 10000"/>
+
+</scenario>
